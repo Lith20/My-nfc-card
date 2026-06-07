@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>بطاقة NFC فخمة | أعمال</title>
+    <!-- Google Fonts: خط عربي فاخر -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(2, 15, 25, 0.98), rgba(0, 0, 0, 0.95));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة فاخرة (نجوم ذهبية) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(2px 2px at 20px 30px, #f9d976, rgba(0,0,0,0)),
+                              radial-gradient(1px 1px at 60px 120px, #e6b422, rgba(0,0,0,0));
+            background-size: 200px 200px, 150px 150px;
+            background-repeat: repeat;
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* بطاقة زجاجية فاخرة */
+        .luxury-card {
+            position: relative;
+            z-index: 2;
+            max-width: 580px;
+            width: 100%;
+            background: rgba(20, 28, 38, 0.65);
+            backdrop-filter: blur(14px);
+            border-radius: 68px;
+            border: 1px solid rgba(230, 180, 70, 0.5);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(230, 180, 70, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .luxury-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(230, 180, 70, 0.9);
+            box-shadow: 0 40px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* رأس البطاقة */
+        .card-header {
+            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(30,35,45,0.8) 100%);
+            padding: 2rem 1.5rem 1.8rem;
+            text-align: center;
+            border-bottom: 2px solid rgba(230, 180, 70, 0.6);
+        }
+
+        .avatar-frame {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #e6b422, #b8860b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            background: #1e262f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #e6b422;
+            background: #0f1a24;
+            transition: all 0.3s;
+        }
+
+        .full-name {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff8e7, #f7d97e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        .job-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #cfb87c;
+            background: rgba(0,0,0,0.4);
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* المحتوى */
+        .card-body {
+            padding: 1.8rem 1.8rem 2rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(10, 18, 25, 0.6);
+            border-radius: 60px;
+            margin-bottom: 1rem;
+            padding: 0.8rem 1.3rem;
+            border: 1px solid rgba(230, 180, 70, 0.2);
+            transition: all 0.25s;
+            text-decoration: none;
+            color: #f0e6d2;
+        }
+
+        .info-row i {
+            width: 32px;
+            font-size: 1.4rem;
+            color: #e6b422;
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            min-width: 85px;
+            font-size: 0.9rem;
+            color: #d8cfb0;
+        }
+
+        .info-value {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 500;
+            direction: ltr;
+            text-align: left;
+            word-break: break-word;
+            color: #faf3e0;
+        }
+
+        .info-row:hover {
+            background: rgba(230, 180, 70, 0.12);
+            border-color: rgba(230, 180, 70, 0.7);
+            transform: translateX(8px);
+        }
+
+        /* الشبكات الاجتماعية */
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.8rem 0 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            color: #e6b422;
+            transition: all 0.25s;
+            text-decoration: none;
+            border: 1px solid rgba(230, 180, 70, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .social-icon:hover {
+            background: #e6b422;
+            color: #0f1a24;
+            transform: scale(1.1) translateY(-5px);
+            border-color: #ffdd88;
+            box-shadow: 0 0 15px rgba(230, 180, 70, 0.6);
+        }
+
+        /* زر vCard فاخر */
+        .btn-vcard {
+            width: 100%;
+            background: linear-gradient(95deg, #b8860b, #e6b422);
+            border: none;
+            padding: 1rem;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0a121c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Cairo', sans-serif;
+            margin-top: 0.5rem;
+            border: 1px solid #ffdd99;
+        }
+
+        .btn-vcard:hover {
+            background: linear-gradient(95deg, #e6b422, #ffd966);
+            transform: scale(0.98);
+            box-shadow: 0 4px 18px rgba(230, 180, 70, 0.4);
+        }
+
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: #aa9f7b;
+            border-top: 1px solid rgba(230,180,70,0.2);
+        }
+
+        @media (max-width: 520px) {
+            .info-label { min-width: 70px; }
+            .info-row { padding: 0.7rem 1rem; }
+            .full-name { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="luxury-card">
+    <div class="card-header">
+        <div class="avatar-frame">
+            <div class="avatar">
+                <i class="fas fa-crown"></i>
+            </div>
+        </div>
+        <div class="full-name" id="fullName">وليد الحارثي</div>
+        <div class="job-title" id="jobTitle">مستشار أعمال | CEO</div>
+    </div>
+    <div class="card-body">
+        <!-- الهاتف -->
+        <a href="#" id="phoneRow" class="info-row">
+            <i class="fas fa-mobile-alt"></i>
+            <span class="info-label">📞 جوال</span>
+            <span class="info-value" id="phoneVal">+966 55 123 4567</span>
+        </a>
+        <!-- البريد -->
+        <a href="#" id="emailRow" class="info-row">
+            <i class="fas fa-envelope"></i>
+            <span class="info-label">✉️ البريد</span>
+            <span class="info-value" id="emailVal">waleed@luxury.com</span>
+        </a>
+        <!-- واتساب -->
+        <div id="whatsappRow" class="info-row" style="cursor:pointer">
+            <i class="fab fa-whatsapp"></i>
+            <span class="info-label">📱 واتساب</span>
+            <span class="info-value" id="whatsappVal">+966 55 123 4567</span>
+        </div>
+        <!-- الموقع -->
+        <div id="websiteRow" class="info-row" style="cursor:pointer">
+            <i class="fas fa-globe"></i>
+            <span class="info-label">🌐 الموقع</span>
+            <span class="info-value" id="websiteVal">https://waleed.sa</span>
+        </div>
+
+        <!-- السوشيال ميديا -->
+        <div class="social-grid">
+            <a href="#" id="twitterLink" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" id="instagramLink" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" id="linkedinLink" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" id="tiktokLink" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+            <a href="#" id="snapchatLink" target="_blank" class="social-icon"><i class="fab fa-snapchat-ghost"></i></a>
+        </div>
+
+        <!-- زر حفظ جهة الاتصال -->
+        <button class="btn-vcard" id="saveVcardBtn">
+            <i class="fas fa-id-card"></i> حفظ كجهة اتصال (vCard)
+        </button>
+    </div>
+    <footer>
+        <i class="fas fa-nfc-symbol"></i> المس بطاقة NFC لفتح هذه البطاقة الفاخرة
+    </footer>
+</div>
+
+<script>
+    // =================== ✨ قم بتعديل بياناتك هنا بكل سهولة ✨ ===================
+    const MY_PROFILE = {
+        fullName: "وليد الحارثي",           // الاسم الكامل
+        jobTitle: "مستشار أعمال | CEO",      // المسمى الوظيفي
+        phone: "+966551234567",              // رقم الهاتف (مع مفتاح الدولة)
+        email: "waleed@luxury.com",          // البريد الإلكتروني
+        whatsapp: "+966551234567",           // رقم واتساب
+        website: "https://waleed.sa",        // رابط الموقع الشخصي
+        twitter: "https://twitter.com/waleed_lux",
+        instagram: "https://instagram.com/waleed.lux",
+        linkedin: "https://linkedin.com/in/waleed-althari",
+        tiktok: "https://tiktok.com/@waleed.lux",
+        snapchat: "https://snapchat.com/add/waleed_lux"
+    };
+    // ========================================================================
+
+    // تطبيق البيانات على الواجهة
+    function updateUI() {
+        document.getElementById('fullName').innerText = MY_PROFILE.fullName;
+        document.getElementById('jobTitle').innerText = MY_PROFILE.jobTitle;
+        document.getElementById('phoneVal').innerText = MY_PROFILE.phone;
+        document.getElementById('emailVal').innerText = MY_PROFILE.email;
+        document.getElementById('whatsappVal').innerText = MY_PROFILE.whatsapp;
+        document.getElementById('websiteVal').innerText = MY_PROFILE.website;
+
+        // تحديث الروابط
+        const phoneRow = document.getElementById('phoneRow');
+        phoneRow.href = `tel:${MY_PROFILE.phone}`;
+        const emailRow = document.getElementById('emailRow');
+        emailRow.href = `mailto:${MY_PROFILE.email}`;
+        const whatsappRow = document.getElementById('whatsappRow');
+        whatsappRow.onclick = () => window.open(`https://wa.me/${MY_PROFILE.whatsapp.replace(/[^0-9+]/g, '')}`, '_blank');
+        const websiteRow = document.getElementById('websiteRow');
+        websiteRow.onclick = () => window.open(MY_PROFILE.website, '_blank');
+
+        // روابط السوشيال
+        document.getElementById('twitterLink').href = MY_PROFILE.twitter;
+        document.getElementById('instagramLink').href = MY_PROFILE.instagram;
+        document.getElementById('linkedinLink').href = MY_PROFILE.linkedin;
+        document.getElementById('tiktokLink').href = MY_PROFILE.tiktok;
+        document.getElementById('snapchatLink').href = MY_PROFILE.snapchat;
+    }
+
+    // سكربت إنشاء vCard وتحميله
+    function downloadVCard() {
+        let vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${MY_PROFILE.fullName}
+TITLE:${MY_PROFILE.jobTitle}
+TEL;TYPE=CELL:${MY_PROFILE.phone}
+EMAIL:${MY_PROFILE.email}
+URL:${MY_PROFILE.website}
+item1.URL:${MY_PROFILE.whatsapp}
+item1.X-ABLabel:WhatsApp
+SOCIAL;type=twitter:${MY_PROFILE.twitter}
+SOCIAL;type=instagram:${MY_PROFILE.instagram}
+SOCIAL;type=linkedin:${MY_PROFILE.linkedin}
+SOCIAL;type=tiktok:${MY_PROFILE.tiktok}
+SOCIAL;type=snapchat:${MY_PROFILE.snapchat}
+END:VCARD`;
+        const blob = new Blob([vcard], { type: "text/vcard" });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = `${MY_PROFILE.fullName.replace(/\s/g, '_')}_contact.vcf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('saveVcardBtn').addEventListener('click', downloadVCard);
+    updateUI();
+</script>
+</body>
+</html>
